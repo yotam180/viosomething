@@ -21,7 +21,7 @@ model = nn.Sequential(nn.Linear(train_ds.bag.shape[1], 100, bias=False), nn.ReLU
 model.load_state_dict(torch.load("results/classifier.pt")['model_state_dict'])
 
 vectorizer = train_ds.vectorizer #used for getting bag of words
-message = "stop dick hey." #list of messages using concatenation
+message = "stop  hey." #list of messages using concatenation
 x = torch.from_numpy(vectorizer.transform(np.array([message])).toarray()).float()
 res = model(x)
 prob = torch.softmax(res, dim=1)
