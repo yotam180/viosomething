@@ -21,7 +21,7 @@ model = nn.Sequential(nn.Linear(train_ds.bag.shape[1], 100, bias=False), nn.ReLU
 model.load_state_dict(torch.load("results/classifier.pt")['model_state_dict'])
 
 vectorizer = train_ds.vectorizer #used for getting bag of words
-message = "stop  hey." #list of messages using concatenation
+message = "stop go hey guy." #list of messages using concatenation
 x = torch.from_numpy(vectorizer.transform(np.array([message])).toarray()).float()
 res = model(x)
 prob = torch.softmax(res, dim=1)
@@ -41,10 +41,12 @@ def check_conversation(messages):
     messaegs = [translate(msg) for msg in messages]
 
     text = messages[0] + ' ' + messages[1] + ' ' + messages[2] + ' ' + messages[3]
-    vec = torch.from_numpy(vectorizer.transform(np.array([message])).toarray()).float()
-    res = model(x)
+    vec = torch.from_numpy(vectorizer.transform(np.array([text])).toarray()).float()
+    res = model(vec)
     prob = torch.softmax(res, dim=1)
-    return prob[1]
+    return prob[0][1].item()
+
+print(check_conversation(["שלום", "לך", "עצור", "מספיק עם זה"]))
 
 
 

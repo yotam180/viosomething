@@ -2,6 +2,7 @@ import sys
 import socket
 from NLP.infer import *
 import json
+import incidents_service
 
 def parse_messages(content):
     s1 = content.index("message")
@@ -40,6 +41,11 @@ def form_example():
 @app.route('/report')
 def json_example():
     print(request.data)
+    d = json.loads(request.body)
+    messagees = d['last_messages']
+    id = d['user']
+    prob = check_conversation(messages)
+    incidents_service.add_fishy_incident(id, prob)
     return 'JSON Object Example'
 
 if __name__ == '__main__':

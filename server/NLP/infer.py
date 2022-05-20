@@ -31,7 +31,6 @@ def translate(msg):
     translation = translator.translate(msg, dest='en', src='he')
     return translation.text
 
-
 def check_conversation(messages):
     global model
     global vectorizer
@@ -39,10 +38,11 @@ def check_conversation(messages):
     messaegs = [translate(msg) for msg in messages]
 
     text = messages[0] + ' ' + messages[1] + ' ' + messages[2] + ' ' + messages[3]
-    vec = torch.from_numpy(vectorizer.transform(np.array([message])).toarray()).float()
-    res = model(x)
+    vec = torch.from_numpy(vectorizer.transform(np.array([text])).toarray()).float()
+    res = model(vec)
     prob = torch.softmax(res, dim=1)
-    return prob[1]
+    return prob[0][1].item()
+
 
 
 
