@@ -19,9 +19,40 @@ def parse_messages(content):
     return messages, identifier
 
 
+# import main Flask class and request object
+from flask import Flask, request
+from flask_cors import CORS
+
+
+# create the Flask app
+app = Flask(__name__)
+CORS(app)
+
+
+@app.route('/query-example')
+def query_example():
+    return 'Query String Example'
+
+@app.route('/form-example')
+def form_example():
+    return 'Form Data Example'
+
+@app.route('/report')
+def json_example():
+    print(request.data)
+    return 'JSON Object Example'
+
+if __name__ == '__main__':
+    # run app in debug mode on port 5000
+    app.run(debug=True, port=9000, host='0.0.0.0')
+
+
+exit(0)
+
+
 if __name__ == "__main__":
    
-    host = "127.0.0.1"
+    host = "0.0.0.0"
     port = 9000
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as soc:
