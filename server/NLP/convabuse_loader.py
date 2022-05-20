@@ -58,9 +58,9 @@ def load_dataset(name='SST'):
 
 
 
-def create_datasets():
-    train_df = pd.read_csv("2_splits/ConvAbuseEMNLPtrain.csv")
-    test_df = pd.read_csv("2_splits/ConvAbuseEMNLPtest.csv")
+def create_datasets(src=''):
+    train_df = pd.read_csv(os.path.join(src,"2_splits/ConvAbuseEMNLPtrain.csv"))
+    test_df = pd.read_csv(os.path.join(src,"2_splits/ConvAbuseEMNLPtest.csv"))
     ds = ConvAbuseDataset(train_df)
     return ds , ConvAbuseDataset(test_df, vectorizer=ds.vectorizer) #, test and validation
 

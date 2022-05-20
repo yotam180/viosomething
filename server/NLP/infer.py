@@ -1,7 +1,7 @@
 import os
 
-from convabuse_loader import * #if training again we will not write NLP. 
-from trainer import *
+from NLP.convabuse_loader import *
+#from trainer import *
 import json
 
 from googletrans import Translator
@@ -11,14 +11,13 @@ from googletrans import Translator
 batch_size = 32
 
 
-train_ds, test_ds = create_datasets()
+train_ds, test_ds = create_datasets('NLP')
 
 
-train_dl = torch.utils.data.DataLoader(train_ds ,batch_size=batch_size, shuffle=True)
-test_dl = torch.utils.data.DataLoader(test_ds ,batch_size=batch_size, shuffle=True)
+
 
 model = nn.Sequential(nn.Linear(train_ds.bag.shape[1], 100, bias=False), nn.ReLU(), nn.Linear(100, 2)) #one hidden layer MLP
-model.load_state_dict(torch.load("results/classifier.pt")['model_state_dict'])
+model.load_state_dict(torch.load("NLP/results/classifier.pt")['model_state_dict'])
 
 vectorizer = train_ds.vectorizer #used for getting bag of words
 # message = "stop stop stop fuck hit attack no want want." #list of messages using concatenation
@@ -32,7 +31,6 @@ def translate(msg):
     translation = translator.translate(msg, dest='en', src='he')
     return translation.text
 
-print(translate("שלום לך חבר קרוב"))
 
 def check_conversation(messages):
     global model
