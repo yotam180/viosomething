@@ -1,4 +1,6 @@
 from database import db
+import asyncio
+import websockets
 
 def sum_total_incidents(phone_hash: str):
     """
@@ -24,4 +26,17 @@ def analyze(phone_hash: dict):
         db.set_alert_num(phone_hash, attacker_alarm_count + 1)
 
 
-    
+
+
+async def echo(websocket):
+    async for message in websocket:
+        await websocket.send(message)
+
+async def main():
+    async with websockets.serve(echo, "0.0.0.0", 8765):
+        await asyncio.Future()  # run forever
+
+def start_web_socket():
+    asyncio.run(main())
+
+start_web_socket()
