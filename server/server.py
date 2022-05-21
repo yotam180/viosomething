@@ -38,15 +38,16 @@ def query_example():
 def form_example():
     return 'Form Data Example'
 
-@app.route('/report')
+@app.route('/report', methods=['POST'])
 def json_example():
     print(request.data)
-    d = json.loads(request.body)
-    messagees = d['last_messages']
+    d = json.loads(request.data.decode('utf-8'))
+    messages = d['last_messages']
     id = d['user']
     prob = check_conversation(messages)
-    incidents_service.add_fishy_incident(id, prob)
-    return 'JSON Object Example'
+    if prob >= 0.5:
+        incidents_service.add_fishy_incident(id, prob)
+    return ''
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
