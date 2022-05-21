@@ -10,7 +10,9 @@
 // ==/UserScript==
 
 const exposeStore = (moduleRaidStr) => {
+  console.log("Pasten 1");
   eval("var moduleRaid = " + moduleRaidStr);
+  console.log("Pasten 2");
   // eslint-disable-next-line no-undef
   window.mR = moduleRaid();
   window.Store = Object.assign(
@@ -690,7 +692,6 @@ let httpRequest = function (method, url, { headers, body, options } = {}) {
   method = method.toUpperCase();
 
   let xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
   xhr.open(method, url, true);
 
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -726,8 +727,10 @@ window.addEventListener("load", () => {
 });
 
 var i = setInterval(() => {
+  console.log("A");
   if (window.Store) {
     clearInterval(i);
+    console.log("B");
     main();
   }
 });
@@ -759,7 +762,7 @@ const onNewMessage = (msg) => {
         return;
       }
 
-      if (!msg.from.user.match(/^[0-9]+$/)) {
+      if (msg.id.participant) {
         console.log(
           "Not a private message. Ignoring... (from = " + msg.from.user + ")"
         );
@@ -791,7 +794,7 @@ const onNewMessage = (msg) => {
 
       console.log("Reporting last messages from chat:", lastMsgs);
 
-      httpRequest("post", "http://localhost:9000/report", {
+      httpRequest("post", "http://192.168.0.103:9000/report", {
         body: {
           last_messages: lastMsgs,
           user: msg.from.user,
