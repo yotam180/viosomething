@@ -1,4 +1,5 @@
 from database import db
+import math
 
 def sum_total_incidents(phone_hash: str):
     """
@@ -7,21 +8,29 @@ def sum_total_incidents(phone_hash: str):
 
     incidents = db.get_incidents()
     total_incidents = 0
+    n = len(incidents[phone_hash])
+    #total_incidents = sum([i['severity'] for i in incidents[phone_hash]])
     for incident in incidents[phone_hash]:
         total_incidents += incident['severity']
-    return total_incidents
+    m = total_incidents / n
+    permute = lambda k: (math.factorial(n)) / (math.factorial(k) * math.factorial(n-k))
+
+    subsections = sum([permute(i)*(m**i)*((-1)**(i)) for i in range(2, n+1)])
+    #print([total_incidents] + [permute(i)*(m**i)*((-1)**(i+1)) for i in range(2, n+1)])
+
+    return total_incidents - subsections
 
 
-def analyze(phone_hash: dict):
+def analyze(phone_hash: str):
     """
     Analyze the new incident and return the result.
     """
     attacker_alarm_count = db.get_alert_num(phone_hash)
-    alarm_threshold = 10 * (attacker_alarm_count + 1)
-
-    if sum_total_incidents(phone_hash) > alarm_threshold:
-        print("Alert!" + phone_hash)
-        db.set_alert_num(phone_hash, attacker_alarm_count + 1)
+    alarm_threshold = 0.9 #threshold is static, can be derived from user settings
+    p = sum_total_incidents(phone_hash)
+    if p > alarm_threshold:
+        print(f"Alert! User:{phone_hash} violated with probabilty:{p}") 
+        db.set_alert_num(phone_hash, attacker_alarm_count + 1) #add alert to dataset, user will read and get notified
 
 
     
