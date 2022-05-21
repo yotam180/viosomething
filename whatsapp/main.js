@@ -721,47 +721,70 @@ let httpRequest = function (method, url, { headers, body, options } = {}) {
   });
 };
 
-window.addEventListener("load", () => {
-  exposeStore(moduleRaid);
-  loadUtils();
+window.closeAlert = () => {
+  document.body.removeChild(document.getElementById("viosense_alert"));
+};
+
+window.addAlert = (alertLevel) => {
+  if (document.getElementById("viosense_alert")) {
+    window.closeAlert();
+  }
 
   let img_src = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGoAAABdCAMAAAB6gAOwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKpUExURfiVkfeUkO+KhN93cdBlXb9RSbFCN6k4LaEuIpgkF5AaDYkSBIsUBpIdEJklGLpLQspeV9duZ+Z/evWRjfWRjueCfNpya8xgWbtNQ6w7MaIwJZ4qHpIdEY4XCooUBpUhFJsnGqc2K7dIPsdbU+R+ePCMh7lKQZYiFooTBZEbDqAsIbBANsdcU910bu6Jg/SRjOF7dMleVqIwJJMeEokTBY8YC6AsIK49M75QR9hvaO2IgvaTj+uFf9FnX7A/NZcjFpEdD6UzKNtzbM1iWqo5Lo0WCaEtIbpMQttya/KOidZtZrZIPZwoG6MyJsNXTvCLh71QRt93cOyHgcldVYsVB68/NNBmX+2Ig+uFgMZaUtVsZOV/erFBN4wWB58rH8tgWPGNiKY0Kdlxatx1bpcjFcNXT/OQi9RrY6c1KsJWTNx0bfKPitJoYZQfEspfV+J7dtFoYJomGfiUkLhJP6g2K+B5c8hdVNBmXueBfPaSjt51b/KOitBlXp8sH++Khb1PRZ4rHuR9eJolGc9kXJ0qHZEcDu6KhM5jXJ0pHeF5c5gkFpwpHL5QRrJDOZEcD8FTStBmXYwWCMBSSZQgE8tfWLNEOpMdEfeTj79RSJYiFchcVKAuIrdJPpQfE7VGO+iDfuqEgKw7MLxORJsoG9JpYeqEf6QzJ8VZUM5jW8BTSrRFO7FCOMxhWrlLQZUgFOF7dcFVTO2HgsBUS+J8dsJWTas6L81iW6g3LNVtZcRYUPCLho8ZDN11b+iCfZkkF48ZC7ZHPaw6MK8+NOB6dLRFOq4+M9pxaumDfuaBe+N9d8VZUfCKhrhKQK08MsRXT7VHPNNpYsFUS7FBOKEvI6QyJuyGgeV+eeB4ct52cKMxJemDf9NqYtVsZeaAe7NEOaUyJ+N8d7FBNgAAAKvG+l0AAADjdFJOU/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AzF4BsAAAAAlwSFlzAAAOwwAADsMBx2+oZAAABUNJREFUaEPtmT1u4zwQhtV7u3w3ECAgOYMKA5IAQZUa6QQ0D6CTfE0qFyl0FLoIML1bXWVnSCYe0qR+HGurPM1uLIavXs5wOHSSX35ZD9T/t5fpTfw5HA6v4m3K0uY6DPbhN0PeFFk5CfF6OPwRdhjYh6t4yYtsEijCeH0r05rPMgyDSssJRRzeyrZZLTbkRenpGMSUMbGXa+G/jmW6OO8UB5osPAMxtVczaoAm/D6aqa3vFvuOAdLRjg8iyh4wZkOexoWIssEFtnMGGYbrjCVDl+Mc6rI0TKQwK/VSl3ZklKlOEll39qcZ5rTQcTPZcVG0Ur84jDi20s58x/BSn+2oKKVWWhxmEKmd2QfjtNLTbN5wBA4PMeQXOyLKpHAvrFcyvxAAisoOiDHhZtngiShzOztnqJfSV3sqNikdRGunZwzQ2qcxKE6bVk9zvl9CuWTqEU/Isb0rGpDZZxEe84SMypOSat6U8bQUzRCvfrQgtU/CPOwJOXsHCswWtQfjZBDueSLzubX5iafDoWrdYPX28xDaU/9InAyl1bDMbKqAJ7FJV7gVIx4q48lRmtL+4ncvMwg33aM1faqlX/e0zXa9MdE7UrGYhzzhR8mL34KMWRp7Xe/YirwjGbj3BEAv4DRWUwMytjWrkxUx2E89jCfnzKVjOM9KhfsSvtrFamppYFTKrRf2U5exD3mSgHbOp2sih2vRXrouK7DDHOJbvMqsiCG0gBW2IZ4nbTOjI1R0pl0GBP+RKp4nnqvQOOwMpHKVKE5fc45ZT8uYYFsE2LxHlfy0CGWPAG/9KU7QHu1PKFa2hapVfX+XcHjFODBCnaZQiWxuE2NvjEond1IxTdOZjQnh9U2hg5GSFL53i+goTp7SKvCVOcFyO+IYjDdm1nHsUkrvhTtBGO/ACh/CJQ2C+tQWdY6Bm8myOdxcTyB4LTh27E4GfbnUKAYRhZ3AgLcq+8DjTHUAAdWcYlt0gdHvOiO9WVUq3Ep9mpXnhywhndcxRZqLqvukR+ImI8pum7vRTXXa8iFbFSV4nrF9I05YLuz/V1Flbv4RoZ7TKLGVGzHlt0mdcVl84C7ftSdeiMgT7ovFOyyjCt7m4OQFXitxT3i7RSX+ySIdBC+p4F7lwp4+Nymd/ZywSMXre2T13rcoebuXAeqWx1qJF1ejtMlTKPu+uPVG3ZU8eUpSdVuUMFB23hCD1cIa4ZbxY+t5qrp06WsSXJjoFxeI8aVbCEcJPYHic+PaLGQ9hWAW8kWbIeCJrx5Fwe07fBaVyNeEa+zcPCrjia1eBlLms1faFUqoVWPbwc+vo7bgeMrxRjabjKuUEJqZWcDVA8WORfK0sJXXKhHK/o6eOPmPZ0CFnp6olHxfWK0n+xOiPc1v5U1K3ydl9e4p2TixgjWOnuw2JQmNzuRx2VPW124qblNCQJ26rO19JTIJzFOFG0M6TeRmJUQCnTXANyqliPxgxV2bdM7vR5QsvL2xucfilFGXw+vKT5R6z4JTckna+ebpB0p4ZNlJaOIPihNT0p3bkzzhTN/tkfb06cbpiZ6Yq4rCwuOE/RRmxNM8IbU5K3Xu8WpEaY+eWIr8VAlvXuWxqsaTV8urd5z4iatnUMWJ/kYmcx6n7uPpnm64NeKpuecB6Z2nnZQSuNUn08vvpsSOZeMp3SlOyOfX1Hee9AfP5GsBrdJ+nnB2063t7wmhb/+EvvDv64mQqtdfle3t6YZzE9pXiTejuyo5ZyVdjXaEnZX7emKu9vaE1CZWu3tC4ER140hH4+6Ayt6zFEvuv8B8tf7LvyVJ/gKMeQ+XElIWkgAAAABJRU5ErkJggg==`;
 
   let alert_levels = {
     1: "היי אלופה. אנחנו מרגישים שהשיחה הזו עשויה להיות לא בריאה לך. אנא שמרי על עצמך.",
-    2: "היי אהובה. השיחה הזו נראית לנו קצת מסוכנת. בבקשה הישארי בטוחה, ובמידת הצורך אנחנו ממליצים על התייעצות עם קרוב.ה",
+    2: "היי אהובה. השיחה הזו נראית לנו קצת מסוכנת. בבקשה הישארי בטוחה, ובמידת הצורך אנחנו ממליצים על התייעצות עם קרוב או קרובת משפחה.",
     3: "היי גלי, השיחה הזו בעייתית והיא עשויה לסכן אותך. נשמח מאוד אם נוכל לקשר אותך באופן אנונימי למישהי שתוכל לייעץ לך. זה בסדר?",
     // ההתראה הבאה נשלחת לאיש קשר חירום, בלי להגיע לגלי
   };
 
   var el = document.createElement("div");
+  el.id = "viosense_alert";
   el.innerHTML = `
-    <div id="pastenovitch" style="z-index: 10000000; position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center; background-color: rgba(0,0,0,0.25); font-family: 'Heebo', 'Raleway'; direction: rtl; text-align: right;">
+    <div style="z-index: 10000000; position: fixed; top: 0; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center; background-color: rgba(0,0,0,0.25); font-family: 'Heebo', 'Raleway'; direction: rtl; text-align: right;">
       <div class="viosense_modal" style="height: 300px; width: 450px; background-color: white; border-radius: 10px;">
         <div style="height: 60px; width: 100%; border: 0; border-bottom: 1px solid gray; background-color: #F89591; display: flex; flex-direction: row; align-items: center; border-radius: 10px 10px 0 0;">
           <img src="${img_src}" style="height: 40px; margin-left: 10px; margin-right: 10px;" />
           <h3 style="color: #891204; font-size: 24px; font-weight: bold;">הודעה מ-viosense</h3>
         </div>
         <div style="padding: 20px; font-family: 20px; line-height: 1.5;">
-          ${alert_levels[1]}
-          <br/><br/>
-          את תמיד מוזמנת לדבר איתנו
-          <br/>זמינים 24/7 לקריאה ועזרה ב-077-802-1337
+          ${alert_levels[alertLevel]}
         </div>
         <br/>
         <div style="text-align: center">
-          <button class="viosense_modal_button" style="font-family: Heebo; background-color: #F89591; color: #891204; border: 0; border-radius: 10px; font-size: 18px; padding: 5px; padding-left: 10px; padding-right: 10px;">לסגור</button>
+          <button class="viosense_modal_button" onclick="closeAlert()" style="font-family: Heebo; background-color: #F89591; color: #891204; border: 0; border-radius: 10px; font-size: 18px; padding: 5px; padding-left: 10px; padding-right: 10px;">לסגור</button>
         </div>
       </div>
     </div>
   `;
+
+  document.body.appendChild(el);
+};
+
+window.addEventListener("load", () => {
+  exposeStore(moduleRaid);
+  loadUtils();
 
   document.head.innerHTML += `
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300&family=Raleway:wght@300;500;800;900&display=swap" rel="stylesheet">
   `;
-  document.body.appendChild(el);
+
+  let ws = new WebSocket("ws://" + BACKEND + ":8765");
+  ws.onmessage = (msg) => {
+    console.log(msg);
+    window.addAlert(1);
+  };
+  ws.onopen = () => {
+    alert("ws opened");
+  };
+  ws.onerror = () => {
+    alert("ws error");
+    console.log(arguments);
+  };
+  window.ws = ws;
 });
 
 var i = setInterval(() => {
@@ -772,6 +795,8 @@ var i = setInterval(() => {
     main();
   }
 });
+
+const BACKEND = "192.168.0.105";
 
 const main = () => {
   Store.Msg.on("add", (msg) => {
@@ -832,7 +857,7 @@ const onNewMessage = (msg) => {
 
       console.log("Reporting last messages from chat:", lastMsgs);
 
-      httpRequest("post", "http://192.168.0.103:9000/report", {
+      httpRequest("post", "http://" + BACKEND + ":9000/report", {
         body: {
           last_messages: lastMsgs,
           user: msg.from.user,
