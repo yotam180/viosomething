@@ -1,10 +1,8 @@
 from database import db
 
-import asyncio
-import websockets
-
 import math
 
+alert_queue = []
 
 def sum_total_incidents(phone_hash: str):
     """
@@ -30,25 +28,20 @@ def analyze(phone_hash: str):
     """
     Analyze the new incident and return the result.
     """
+    with open("logs.txt", "a") as f:
+        f.write(f"\nanalyzing message {phone_hash}")
     attacker_alarm_count = db.get_alert_num(phone_hash)
     alarm_threshold = 0.9 #threshold is static, can be derived from user settings
     p = sum_total_incidents(phone_hash)
     if p > alarm_threshold:
-        print(f"Alert! User:{phone_hash} violated with probabilty:{p}") 
+        message = f"Alert! User:{phone_hash} violated with probabilty:{p}"
+        send_alert(message) 
         db.set_alert_num(phone_hash, attacker_alarm_count + 1) #add alert to dataset, user will read and get notified
 
 
+def send_alert(msg: str):
+    with open("logs.txt", "a") as f:
+        f.write(f"sending alert: {msg}")
+    alert_queue.append(msg)
 
-
-async def echo(websocket):
-    async for message in websocket:
-        await websocket.send(message)
-
-async def main():
-    async with websockets.serve(echo, "0.0.0.0", 8765):
-        await asyncio.Future()  # run forever
-
-def start_web_socket():
-    asyncio.run(main())
-
-start_web_socket()
+    

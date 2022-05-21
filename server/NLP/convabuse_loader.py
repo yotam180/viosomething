@@ -1,21 +1,13 @@
 from torchsummary import summary
 
 import os
-import sys
-import time
 import torch
 import matplotlib.pyplot as plt
 import warnings
-import torch.nn as nn
-import numpy as np
 import pandas as pd
-import torchtext
-import torchtext.data
-from torchtext.legacy import data
-from torchtext.vocab import Vectors, GloVe
-import torchtext.datasets
-import collections
 from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
+import torch.nn as nn
 
 warnings.simplefilter("ignore")
 plt.rcParams['font.size'] = 20

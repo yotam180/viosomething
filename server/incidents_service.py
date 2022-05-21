@@ -1,15 +1,9 @@
 from database import db
 from alert_manager import analyze
 
-
-
-
 def add_fishy_incident(phone_hash: str, incident: float):
     db.add_incident(phone_hash, { "severity": incident })
     analyze(phone_hash)
-
-
-
 
 def add_user(username: str, hashed_password: str, contact_info: dict):
     db.add_user(username, hashed_password, contact_info)

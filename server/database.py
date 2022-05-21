@@ -47,6 +47,9 @@ class JsonDB:
         """
         Add an incident to the database.
         """
+
+        if os.path.exists(self.path):
+            self.__init__()
         with open(self.path, "r+") as db_json_file:
             data = json.load(db_json_file)
             saved_incidents = data['incidents']
@@ -67,6 +70,9 @@ class JsonDB:
         Adding user to the database.
         """
         
+        if os.path.exists(self.path):
+            self.__init__()
+
         with open(self.path,'r+') as db_json_file:
             data = json.load(db_json_file)
             
@@ -84,6 +90,10 @@ class JsonDB:
         """
         Get all incidents from the database.
         """
+
+        if os.path.exists(self.path):
+            self.__init__()
+
         with open(self.path, "r") as db_json_file:
             data = json.load(db_json_file)
             return data["incidents"]
@@ -92,6 +102,10 @@ class JsonDB:
         """
         Set the number of alerts for a phone hash.
         """
+
+        if os.path.exists(self.path):
+            self.__init__()
+
         with open(self.path, "r+") as db_json_file:
             data = json.load(db_json_file)
             data["alerts"][phone_hash] = num
@@ -102,6 +116,10 @@ class JsonDB:
         """
         Get the number of alerts for a phone hash.
         """
+
+        if os.path.exists(self.path):
+            self.__init__()
+
         with open(self.path, "r") as db_json_file:
             data = json.load(db_json_file)
             return data["alerts"].get(phone_hash) or 0
