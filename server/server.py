@@ -30,8 +30,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/query-example')
+@app.route('/query', methods=['GET'])
 def query_example():
+    #load alerts and return 
     return 'Query String Example'
 
 @app.route('/form-example')
@@ -45,7 +46,7 @@ def json_example():
     messages = d['last_messages']
     id = d['user']
     prob = check_conversation(messages)
-    if prob >= 0.5:
+    if prob >= 0.1:
         incidents_service.add_fishy_incident(id, prob)
     return ''
 
