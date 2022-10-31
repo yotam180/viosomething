@@ -775,7 +775,7 @@ window.addEventListener("load", () => {
   let ws = new WebSocket("ws://" + BACKEND + ":8765");
   ws.onmessage = (msg) => {
     console.log(msg);
-    window.addAlert(1);
+    window.addAlert(2);
   };
   ws.onopen = () => {
     alert("ws opened");
@@ -796,7 +796,7 @@ var i = setInterval(() => {
   }
 });
 
-const BACKEND = "192.168.0.105";
+const BACKEND = "127.0.0.1";
 
 const main = () => {
   Store.Msg.on("add", (msg) => {
@@ -851,8 +851,8 @@ const onNewMessage = (msg) => {
 
       let msgs = chat.msgs.models;
       let lastMsgs = msgs
+        .filter((msg) => msg.type === "chat")
         .slice(msgs.length - msgsToReport)
-        .filter(msgFilter)
         .map((msg) => msg.body);
 
       console.log("Reporting last messages from chat:", lastMsgs);

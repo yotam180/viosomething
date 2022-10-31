@@ -31,8 +31,9 @@ def analyze(phone_hash: str):
     with open("logs.txt", "a") as f:
         f.write(f"\nanalyzing message {phone_hash}")
     attacker_alarm_count = db.get_alert_num(phone_hash)
-    alarm_threshold = 0.9 #threshold is static, can be derived from user settings
+    alarm_threshold = 0.5 #threshold is static, can be derived from user settings
     p = sum_total_incidents(phone_hash)
+    print("Sum total incidents", p)
     if p > alarm_threshold:
         message = f"Alert! User:{phone_hash} violated with probabilty:{p}"
         send_alert(message) 

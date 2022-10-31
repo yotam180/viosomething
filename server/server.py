@@ -35,7 +35,8 @@ def json_example():
     messages = d['last_messages']
     id = d['user']
     prob = check_conversation(messages)
-    if prob >= 0.5:
+    print("prob", prob)
+    if prob >= 0.35:
         incidents_service.add_fishy_incident(id, prob)
     return ''
 

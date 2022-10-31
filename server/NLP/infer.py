@@ -13,8 +13,7 @@ batch_size = 32
 train_ds, test_ds = create_datasets('NLP')
 
 
-model = nn.Sequential(nn.Linear(train_ds.bag.shape[1], 100, bias=False), nn.ReLU(
-), nn.Linear(100, 2))  # one hidden layer MLP
+model = nn.Sequential(nn.Linear(train_ds.bag.shape[1], 1000, bias=False), nn.ReLU(), nn.Linear(1000, 2))  # one hidden layer MLP
 model.load_state_dict(torch.load(
     "NLP/results/classifier.pt")['model_state_dict'])
 
